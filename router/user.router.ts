@@ -1,7 +1,12 @@
 import { Router } from "express";
+import validateResource from "../middleware/validateResource";
+import { createUserSchema } from "../schema/user.schema";
+import { createUserHandler } from "../controller/user.controller";
 
 export default function (router: Router) {
-  router.get("/api/user", (req, res) => {
-    return res.status(200).json({ test: " test" }).end();
-  });
+  router.post(
+    "/api/user",
+    validateResource(createUserSchema),
+    createUserHandler
+  );
 }
