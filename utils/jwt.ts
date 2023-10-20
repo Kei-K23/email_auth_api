@@ -7,12 +7,6 @@ export function signJWT(
   key?: "ACCESS_TOKEN_PRIVATE_KEY" | "REFRESH_TOKEN_PRIVATE_KEY"
 ) {
   const signInKey = config.get<string>(key as string);
-  // let signInKey: string = "";
-  // if (key === "ACCESS_TOKEN_PRIVATE_KEY") {
-  //   signInKey = process.env.ACCESS_TOKEN_PRIVATE_KEY as string;
-  // } else if (key === "REFRESH_TOKEN_PRIVATE_KEY ") {
-  //   signInKey = process.env.REFRESH_TOKEN_PRIVATE_KEY as string;
-  // }
 
   return jwt.sign(payload, signInKey, {
     ...(options && options),
@@ -24,10 +18,8 @@ export function verifyJWT<T>(
   toke: string,
   key?: "ACCESS_TOKEN_PUBLIC_KEY" | "REFRESH_TOKEN_PUBLIC_KEY"
 ): T | null {
-  const keyToVerify = Buffer.from(
-    config.get<string>(key as string),
-    "base64"
-  ).toString("ascii");
+  const keyToVerify = config.get<string>(key as string);
+
   try {
     const decoded = jwt.verify(toke, keyToVerify) as T;
 

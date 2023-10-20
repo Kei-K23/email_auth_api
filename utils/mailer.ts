@@ -1,10 +1,9 @@
 import nodemailer, { SendMailOptions } from "nodemailer";
 import config from "config";
 import { logger } from "./logger";
-//! testing creds
+//! testing creds for only first time to get creds
 // async function createTestCred() {
 //   const cred = await nodemailer.createTestAccount();
-//   console.log(cred);
 // }
 
 // createTestCred();

@@ -11,11 +11,15 @@ import {
   createVerificationHandler,
   forgetPasswordHandler,
   getAllUsersHandler,
+  getSessionUser,
   resetPasswordHandler,
 } from "../controller/user.controller";
+import { deserializedUser } from "../middleware/deserializeUser";
+import { requiredUser } from "../middleware/requiredUser";
 
 export default function (router: Router) {
   router.get("/api/user", getAllUsersHandler);
+  router.get("/api/user/me", requiredUser, getSessionUser);
   router.post(
     "/api/user",
     validateResource(createUserSchema),

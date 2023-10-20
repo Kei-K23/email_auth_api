@@ -2,6 +2,23 @@ import mongoose, { Model, Schema } from "mongoose";
 import argon2 from "argon2";
 import { logger } from "../utils/logger";
 
+export const PRIVATE_FIELDS = [
+  "password",
+  "verification_code",
+  "verify",
+  "password_reset_code",
+  "__v",
+];
+
+export type IUser = {
+  name: string;
+  email: string;
+  password: string;
+  verification_code?: string;
+  password_reset_code?: string | null;
+  verify: boolean;
+};
+
 export interface UserDocument extends mongoose.Document {
   name: string;
   email: string;

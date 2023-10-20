@@ -233,3 +233,21 @@ export async function resetPasswordHandler(
     return res.status(500).json({ error: e.message }).end();
   }
 }
+
+export async function getSessionUser(req: Request, res: Response) {
+  try {
+    const user = res.locals.user;
+    if (!user)
+      return res
+        .status(403)
+        .json({ message: "user session expired! refresh the session token" });
+
+    return res.status(200).json({ user });
+  } catch (e: any) {
+    if (e instanceof MongooseError)
+      return res.status(500).json({ error: e.message }).end();
+    if (e instanceof ZodError)
+      return res.status(500).json({ error: e.message }).end();
+    return res.status(500).json({ error: e.message }).end();
+  }
+}

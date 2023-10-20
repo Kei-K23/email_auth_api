@@ -1,3 +1,5 @@
+//! make sure use your own private and public key. I just put these key in this files if only for simplicity and it not meant to be for production
+
 export default {
   port: 8090,
   db_url: "mongodb://localhost:27018/email_auth_api",
