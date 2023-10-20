@@ -7,11 +7,11 @@ export interface IUser {
   email: string;
   password: string;
   verification_code?: string;
-  password_reset_code?: string;
+  password_reset_code?: string | null;
   verify: boolean;
 }
 
-export interface UserDocument extends Document, IUser {}
+export interface UserDocument extends mongoose.Document, IUser {}
 
 interface UserMethod {
   verifyPassword: (candidatePassword: string) => Promise<boolean>;
@@ -72,7 +72,7 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, UserMethod>(
 );
 
 UserSchema.pre("save", async function (next) {
-  if (this.isModified("password")) next();
+  if (!this.isModified("password")) next();
   const hash_password = await argon2.hash(this.password);
   this.password = hash_password;
   next();
