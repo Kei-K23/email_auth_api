@@ -2,24 +2,22 @@ import mongoose, { Model, Schema } from "mongoose";
 import argon2 from "argon2";
 import { logger } from "../utils/logger";
 
-export interface IUser {
+export interface UserDocument extends mongoose.Document {
   name: string;
   email: string;
   password: string;
   verification_code?: string;
   password_reset_code?: string | null;
   verify: boolean;
-}
-
-export interface UserDocument extends mongoose.Document, IUser {}
-
-interface UserMethod {
   verifyPassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-type UserModel = Model<IUser, {}, UserMethod>;
+interface UserModel extends Model<UserDocument> {
+  password: string;
+  verifyPassword: (candidatePassword: string) => Promise<boolean>;
+}
 
-const UserSchema = new mongoose.Schema<IUser, UserModel, UserMethod>(
+const UserSchema = new mongoose.Schema<UserDocument, UserModel>(
   {
     name: {
       type: String,
@@ -78,7 +76,7 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-UserSchema.method(
+UserSchema.static(
   "verifyPassword",
   async function verifyPassword(candidatePassword: string): Promise<boolean> {
     try {
@@ -90,4 +88,7 @@ UserSchema.method(
   }
 );
 
-export const UserModel = mongoose.model<IUser, UserModel>("User", UserSchema);
+export const UserModel = mongoose.model<UserDocument, UserModel>(
+  "User",
+  UserSchema
+);

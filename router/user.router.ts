@@ -26,11 +26,11 @@ export default function (router: Router) {
     validateResource(createVerificationSchema),
     createVerificationHandler
   );
-  // router.post(
-  //   "/api/user/reset_pass/:id/:password_reset_code",
-  //   validateResource(createResetPasswordSchema),
-  //   resetPasswordHandler
-  // );
+  router.post(
+    "/api/user/reset_pass/:id/:password_reset_code",
+    validateResource(createResetPasswordSchema),
+    resetPasswordHandler
+  );
   router.post(
     "/api/user/reset_password",
     validateResource(createForgetPasswordSchema),
