@@ -1,14 +1,18 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 import config from "config";
+
 export function signJWT(
   payload: Object,
   options?: SignOptions | undefined,
-  key?: "ACCESS_TOKEN_PRIVATE_KEY" | "REFRESH_TOKEN_PRIVATE_KEY "
+  key?: "ACCESS_TOKEN_PRIVATE_KEY" | "REFRESH_TOKEN_PRIVATE_KEY"
 ) {
-  const signInKey = Buffer.from(
-    config.get<string>(key as string),
-    "base64"
-  ).toString("ascii");
+  const signInKey = config.get<string>(key as string);
+  // let signInKey: string = "";
+  // if (key === "ACCESS_TOKEN_PRIVATE_KEY") {
+  //   signInKey = process.env.ACCESS_TOKEN_PRIVATE_KEY as string;
+  // } else if (key === "REFRESH_TOKEN_PRIVATE_KEY ") {
+  //   signInKey = process.env.REFRESH_TOKEN_PRIVATE_KEY as string;
+  // }
 
   return jwt.sign(payload, signInKey, {
     ...(options && options),
